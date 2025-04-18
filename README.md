@@ -29,8 +29,32 @@ Response:
     "Use biodegradable packaging"
   ]
 }
+
 GET /history
 Returns a list of previously submitted products with their score, rating, and suggestions.
+
+GET /score-summary
+Returns a statistical summary of all submitted scores, including:
+
+Average score
+
+Highest and lowest score
+
+Distribution of ratings
+
+Example Response:
+
+{
+  "average_score": 68.2,
+  "max_score": 92.0,
+  "min_score": 45.0,
+  "rating_counts": {
+    "A": 3,
+    "B": 5,
+    "C": 2,
+    "D": 1
+  }
+}
 
 ⚙️ Installation
 
