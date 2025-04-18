@@ -9,7 +9,7 @@ This is a lightweight Flask API that calculates a **sustainability score** for p
 ### `POST /score`
 
 **Request:**
-
+```json
 {
   "product_name": "Reusable Bottle", 
   "materials": ["aluminum", "plastic"],
@@ -17,9 +17,9 @@ This is a lightweight Flask API that calculates a **sustainability score** for p
   "transport": "air",
   "packaging": "recyclable"
 }
-
+```
 Response:
-
+```json
 {
   "product_name": "Reusable Bottle",
   "sustainability_score": 72.5,
@@ -29,11 +29,11 @@ Response:
     "Use biodegradable packaging"
   ]
 }
-
-GET /history
+```
+### GET /history
 Returns a list of previously submitted products with their score, rating, and suggestions.
 
-GET /score-summary
+### GET /score-summary
 Returns a statistical summary of all submitted scores, including:
 
 Average score
@@ -43,7 +43,7 @@ Highest and lowest score
 Distribution of ratings
 
 Example Response:
-
+```json
 {
   "average_score": 68.2,
   "max_score": 92.0,
@@ -55,8 +55,8 @@ Example Response:
     "D": 1
   }
 }
-
-⚙️ Installation
+```
+# Installation
 
 git clone https://github.com/ilyes200264/durability-score-api.git
 
@@ -71,12 +71,17 @@ python -m venv venv
 source venv/bin/activate
 
 # On Windows:
+Check first if you are on the right directory or not, then open the powershell and enter the commands below :
+
 venv\Scripts\activate
+
 pip install -r requirements.txt
+
 python app.py
+
 The API will be running at: http://localhost:5000
 
-✅ Unit Testing
+# Unit Testing
 
 pytest
 Tests are included in the test_app.py file and cover both the API routes and business logic.
