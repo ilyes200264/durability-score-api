@@ -58,9 +58,7 @@ Example Response:
  "D": 1
  },
  "top_issues": [
- "Plastic used",
- "Air transport",
- "Non-recyclable packaging"
+ "Plastic used", "Air transport", "Non-recyclable packaging"
  ]
 }
 
