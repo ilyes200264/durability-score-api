@@ -28,13 +28,10 @@ Bienvenue sur l'API de durabilité !
 Response:
 ```json
 {
-  "product_name": "Reusable Bottle",
-  "sustainability_score": 72.5,
-  "rating": "B",
-  "suggestions": [
-    "Avoid air transport",
-    "Use biodegradable packaging"
-  ]
+    "product_name": "Reusable Bottle",
+    "sustainability_score": 90,
+    "rating": "A",
+    "suggestions": ["Avoid using plastic", "Consider using recycled aluminum", "Avoid air transport"]
 }
 ```
 ### GET /history
