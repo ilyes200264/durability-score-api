@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
-from collections import Counter
+from collections import Counter, OrderedDict
 import json
 import os
 
@@ -51,7 +51,6 @@ def home():
 @app.route('/score', methods=['POST'])
 def score():
     data = request.get_json()
-
     error = validate_input(data)
     if error:
         return jsonify({"error": error}), 400
@@ -110,36 +109,37 @@ def score():
     db.session.add(entry)
     db.session.commit()
 
-    return jsonify({
-        "product_name": product_name,
-        "sustainability_score": round(score, 2),
-        "rating": rating,
-        "suggestions": suggestions
-    })
+    response = OrderedDict()
+    response["product_name"] = product_name
+    response["sustainability_score"] = round(score, 2)
+    response["rating"] = rating
+    response["suggestions"] = suggestions
+
+    return Response(json.dumps(response), mimetype='application/json')
 
 @app.route('/history', methods=['GET'])
 def get_history():
     entries = Submission.query.all()
     result = []
     for entry in entries:
-        result.append({
-            "product_name": entry.product_name,
-            "sustainability_score": entry.sustainability_score,
-            "rating": entry.rating,
-            "suggestions": json.loads(entry.suggestions)
-        })
-    return jsonify(result)
+        item = OrderedDict()
+        item["product_name"] = entry.product_name
+        item["sustainability_score"] = entry.sustainability_score
+        item["rating"] = entry.rating
+        item["suggestions"] = json.loads(entry.suggestions)
+        result.append(item)
+    return Response(json.dumps(result), mimetype='application/json')
 
 @app.route('/score-summary', methods=['GET'])
 def score_summary():
     entries = Submission.query.all()
     if not entries:
-        return jsonify({
-            "total_products": 0,
-            "average_score": 0,
-            "ratings": {"A": 0, "B": 0, "C": 0, "D": 0},
-            "top_issues": []
-        })
+        response = OrderedDict()
+        response["total_products"] = 0
+        response["average_score"] = 0
+        response["ratings"] = {"A": 0, "B": 0, "C": 0, "D": 0}
+        response["top_issues"] = []
+        return Response(json.dumps(response), mimetype='application/json')
 
     total = len(entries)
     total_score = sum(e.sustainability_score for e in entries)
@@ -155,12 +155,13 @@ def score_summary():
 
     top_issues = [issue for issue, _ in Counter(issues_list).most_common(3)]
 
-    return jsonify({
-        "total_products": total,
-        "average_score": average_score,
-        "ratings": ratings_counter,
-        "top_issues": top_issues
-    })
+    response = OrderedDict()
+    response["total_products"] = total
+    response["average_score"] = average_score
+    response["ratings"] = ratings_counter
+    response["top_issues"] = top_issues
+
+    return Response(json.dumps(response), mimetype='application/json')
 
 if __name__ == '__main__':
     if not os.path.exists("instance"):
