@@ -49,16 +49,21 @@ Distribution of ratings
 Example Response:
 ```json
 {
-  "average_score": 68.2,
-  "max_score": 92.0,
-  "min_score": 45.0,
-  "rating_counts": {
-    "A": 3,
-    "B": 5,
-    "C": 2,
-    "D": 1
-  }
+ "total_products": 12,
+ "average_score": 68.3,
+ "ratings": {
+ "A": 2,
+ "B": 5,
+ "C": 4,
+ "D": 1
+ },
+ "top_issues": [
+ "Plastic used",
+ "Air transport",
+ "Non-recyclable packaging"
+ ]
 }
+
 ```
 # Installation
 
