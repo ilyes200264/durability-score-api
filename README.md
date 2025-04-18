@@ -6,6 +6,13 @@ This is a lightweight Flask API that calculates a **sustainability score** for p
 
 ## 🔧 Endpoints
 
+### GET `/`
+Basic welcome route to verify that the API is running.
+
+**Response**
+
+Bienvenue sur l'API de durabilité !
+
 ### `POST /score`
 
 **Request:**
