@@ -1,10 +1,13 @@
 from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
+from flasgger import Swagger
 from collections import Counter, OrderedDict
 import json
 import os
 
 app = Flask(__name__)
+swagger = Swagger(app)
+
 app.config.from_mapping(
     SQLALCHEMY_DATABASE_URI='sqlite:///history.db',
     SQLALCHEMY_TRACK_MODIFICATIONS=False
@@ -50,6 +53,39 @@ def home():
 
 @app.route('/score', methods=['POST'])
 def score():
+    """
+    Calculate sustainability score
+    ---
+    tags:
+      - Scoring
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            product_name:
+              type: string
+              example: "Reusable Bottle"
+            materials:
+              type: array
+              items:
+                type: string
+              example: ["aluminum", "plastic"]
+            weight_grams:
+              type: number
+              example: 300
+            transport:
+              type: string
+              example: "air"
+            packaging:
+              type: string
+              example: "recyclable"
+    responses:
+      200:
+        description: Sustainability score calculated
+    """
     data = request.get_json()
     error = validate_input(data)
     if error:
@@ -119,6 +155,15 @@ def score():
 
 @app.route('/history', methods=['GET'])
 def get_history():
+    """
+    Get the history of submissions
+    ---
+    tags:
+      - History
+    responses:
+      200:
+        description: List of previous sustainability assessments
+    """
     entries = Submission.query.all()
     result = []
     for entry in entries:
@@ -132,6 +177,15 @@ def get_history():
 
 @app.route('/score-summary', methods=['GET'])
 def score_summary():
+    """
+    Get summary statistics about sustainability scores
+    ---
+    tags:
+      - Summary
+    responses:
+      200:
+        description: Score statistics and top issues
+    """
     entries = Submission.query.all()
     if not entries:
         response = OrderedDict()
@@ -171,5 +225,4 @@ if __name__ == '__main__':
         with app.app_context():
             db.create_all()
 
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
