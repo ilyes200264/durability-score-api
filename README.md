@@ -2,25 +2,25 @@
 
 This is a lightweight Flask API that calculates a **sustainability score** for physical products based on materials, weight, transport method, and packaging. It uses SQLite to store the history of submissions.
 
-# 📊 Scoring System (Starts at 100)
+#  Scoring System (Starts at 100)
 
-## ♻️ Conditions & Impacts
+##  Conditions & Impacts
 
 | Condition                                      | Score Impact | Suggestion Generated                              |
 |------------------------------------------------|--------------|---------------------------------------------------|
-| Contains `"plastic"` in materials              | -10          | ✅ Avoid using plastic                             |
+| Contains `"plastic"` in materials              | -10          |  Avoid using plastic                             |
 | Contains `"recycled"` in materials             | +10          |                                                   |
 | Contains `"aluminum"`                          | +5           |                                                   |
-| `"aluminum"` but not `"recycled"`             | —            | ✅ Consider using recycled aluminum               |
-| Transport is `"air"`                           | -15          | ✅ Avoid air transport                             |
+| `"aluminum"` but not `"recycled"`             | —            |  Consider using recycled aluminum               |
+| Transport is `"air"`                           | -15          |  Avoid air transport                             |
 | Transport is `"rail"` or `"sea"`               | +5           |                                                   |
 | Packaging is `"recyclable"` or `"biodegradable"` | +10        |                                                   |
-| Packaging is `"non-recyclable"`                | 0            | ✅ Use recyclable or biodegradable packaging       |
-| Product weight exceeds 500 grams               | -5           | ✅ Reduce product weight                           |
+| Packaging is `"non-recyclable"`                | 0            |  Use recyclable or biodegradable packaging       |
+| Product weight exceeds 500 grams               | -5           | Reduce product weight                           |
 
 ---
 
-## 🏅 Rating Thresholds
+##  Rating Thresholds
 
 The final score is converted to a rating based on this scale:
 
