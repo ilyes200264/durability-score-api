@@ -1,3 +1,26 @@
+"""
+Durability Score API
+---------------------
+
+Author: Ilyes Ghorieb
+Description:
+    This is a lightweight Flask API to evaluate the sustainability score of physical products
+    based on their materials, weight, transport method, and packaging.
+
+    It includes three main endpoints:
+    - POST /score: Calculate a sustainability score and return suggestions
+    - GET /history: View all previous assessments stored in the database
+    - GET /score-summary: Get statistics on all assessments
+
+Technologies:
+    - Flask
+    - SQLite via SQLAlchemy ORM
+    - Swagger (via flasgger) for documentation
+
+Last updated: April 2025
+"""
+
+
 from flask import Flask, request, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
 from flasgger import Swagger
@@ -8,20 +31,26 @@ import os
 app = Flask(__name__)
 swagger = Swagger(app)
 
+
+# Configuration de la base SQLite avec SQLAlchemy
 app.config.from_mapping(
     SQLALCHEMY_DATABASE_URI='sqlite:///history.db',
     SQLALCHEMY_TRACK_MODIFICATIONS=False
 )
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app)    # Connexion entre Flask et la base de données via SQLAlchemy
+
 
 class Submission(db.Model):
+    # Modèle représentant une soumission avec les champs stockés dans la base SQLite
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(100))
     sustainability_score = db.Column(db.Float)
     rating = db.Column(db.String(2))
     suggestions = db.Column(db.Text)
 
+
+# Vérifie que toutes les données requises sont présentes et du bon type
 def validate_input(data):
     required_fields = {
         "product_name": str,
@@ -99,7 +128,8 @@ def score():
 
     score = 100
     suggestions = []
-
+    
+    # Logique de calcul du score de durabilité selon les critères
     if "plastic" in materials:
         score -= 10
         suggestions.append("Avoid using plastic")
@@ -136,6 +166,8 @@ def score():
     else:
         rating = "D"
 
+    
+    # Enregistrement de la soumission dans la base de données
     entry = Submission(
         product_name=product_name,
         sustainability_score=round(score, 2),
