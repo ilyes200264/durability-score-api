@@ -118,10 +118,31 @@ The API will be running at: http://localhost:5000
 
 # Unit Testing
 
-pytest
-Tests are included in the test_app.py file and cover both the API routes and business logic.
+This project includes unit tests to ensure both the API endpoints and the internal logic work as expected.
 
-🗃️ Technical Notes
+**To run the tests:**
+
+tap pytest in the terminal in the durability-score-api directory
+
+**Covered Tests**
+The test suite (test_app.py) currently includes:
+
+test_score_valid_input: Verifies a valid POST /score returns the correct structure and values.
+
+test_score_invalid_input: Ensures that missing or incorrect fields return appropriate error messages.
+
+test_history_returns_entries: Checks that GET /history returns previously submitted data.
+
+test_score_summary_stats: Validates that GET /score-summary provides accurate statistics, including average score and rating distribution.
+
+test_score_summary_empty: Ensures the summary returns zeros when no data has been submitted.
+
+**Notes**
+Tests use an in-memory SQLite database (sqlite:///:memory:) to ensure clean, isolated environments during execution.
+
+No external configuration or setup is needed — simply run pytest after activating your virtual environment.
+
+**Technical Notes**
 SQLite database is located at instance/history.db
 
 .gitignore excludes the venv/ and __pycache__/ folders
